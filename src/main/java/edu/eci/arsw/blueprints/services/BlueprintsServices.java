@@ -5,6 +5,7 @@
  */
 package edu.eci.arsw.blueprints.services;
 
+import edu.eci.arsw.blueprints.filtros.Filtro;
 import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
@@ -15,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,7 +27,12 @@ import org.springframework.stereotype.Service;
 public class BlueprintsServices {
    
     @Autowired
+    @Qualifier("inMemoryPersistence")
     BlueprintsPersistence bpp;
+    
+    @Autowired
+    @Qualifier("Redundancia")
+    Filtro filtro;
     
     public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException{
         bpp.saveBlueprint(bp);
@@ -56,5 +63,12 @@ public class BlueprintsServices {
         return bpp.getBlueprintsByAuthor(author);    
     }
     
+    public Blueprint filterBlueprint(Blueprint blueprint) {
+        return filtro.filtroBlueprint(blueprint);
+    }
+    
+    public Set<Blueprint> multiFilter(Set<Blueprint> blueprints) {
+        return filtro.multiFiltroBluePrint(blueprints);
+    }
     
 }
