@@ -5,9 +5,11 @@
  */
 package edu.eci.arsw.blueprints.controllers;
 
+import edu.eci.arsw.blueprints.filtros.Filtro;
 import edu.eci.arsw.blueprints.model.Blueprint;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
+import edu.eci.arsw.blueprints.services.BlueprintsServices;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -30,14 +32,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlueprintAPIController {
     
     @Autowired
-    @Qualifier("inMemoryPersistence")
-    BlueprintsPersistence bpp;
+    BlueprintsServices bpp;
     
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> todosLosPlanos(){
         try {
             //obtener datos que se enviarán a través del API
-            return new ResponseEntity<>(bpp.getAllBlueprints(),HttpStatus.ACCEPTED);
+            Set<Blueprint> bp = bpp.getAllBlueprints(); 
+            return new ResponseEntity<>(bpp.multiFilter(bp),HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException ex) {
             Logger.getLogger(ResourceNotFoundException.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>("Error",HttpStatus.NOT_FOUND);
@@ -65,6 +67,5 @@ public class BlueprintAPIController {
             return new ResponseEntity<>("El elemento no se encontró",HttpStatus.NOT_FOUND);
         }        
     }
-    
 }
 
