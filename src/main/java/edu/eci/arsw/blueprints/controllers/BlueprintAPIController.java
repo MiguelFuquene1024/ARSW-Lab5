@@ -5,13 +5,18 @@
  */
 package edu.eci.arsw.blueprints.controllers;
 
+import edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
+import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,31 +26,45 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hcadavid
  */
 @RestController
-@RequestMapping(value = "/test")
+@RequestMapping(value = "/blueprints")
 public class BlueprintAPIController {
     
-    @RequestMapping(value = "/GET", method = RequestMethod.GET)
-    public ResponseEntity<?> manejadorGetRecursoXX(){
+    @Autowired
+    @Qualifier("inMemoryPersistence")
+    BlueprintsPersistence bpp;
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<?> todosLosPlanos(){
         try {
             //obtener datos que se enviarán a través del API
-            return new ResponseEntity<>("Hola",HttpStatus.NOT_FOUND);
-        } catch (Exception ex) {
+            return new ResponseEntity<>(bpp.getAllBlueprints(),HttpStatus.ACCEPTED);
+        } catch (BlueprintNotFoundException ex) {
             Logger.getLogger(ResourceNotFoundException.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("Error bla bla bla",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error",HttpStatus.NOT_FOUND);
         }        
     }
     
-    @RequestMapping(value = "/POST", method = RequestMethod.POST)
-    public ResponseEntity<?> manejadorPost(){
+    @RequestMapping(value = "/{author}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerPorAutor(@PathVariable("author") String author){
         try {
             //obtener datos que se enviarán a través del API
-            return new ResponseEntity<>("Hola post",HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(bpp.getBlueprintsByAuthor(author),HttpStatus.ACCEPTED);
         } catch (Exception ex) {
             Logger.getLogger(ResourceNotFoundException.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("Error bla bla bla",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("El autor "+author+" no se encontró",HttpStatus.NOT_FOUND);
         }        
     }
     
+    @RequestMapping(value = "/{author}/{bpname}", method = RequestMethod.GET)
+    public ResponseEntity<?> obtenerPorAutoryNombre(@PathVariable("author") String author, @PathVariable("bpname") String bpname ){
+        try {
+            //obtener datos que se enviarán a través del API
+            return new ResponseEntity<>(bpp.getBlueprint(author,bpname),HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(ResourceNotFoundException.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("El elemento no se encontró",HttpStatus.NOT_FOUND);
+        }        
+    }
     
 }
 
