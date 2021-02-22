@@ -3,8 +3,8 @@
 
 ### Arquitecturas de Software
 
-# Miguel Angel Fuquene
-# Javier Esteban López
+**Miguel Angel Fuquene
+Javier Esteban López**
 
 ## Laboratorio API REST para la gestión de planos
 
