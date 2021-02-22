@@ -89,6 +89,14 @@ public class Blueprint {
         this.points = update;
 
     }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     
     
