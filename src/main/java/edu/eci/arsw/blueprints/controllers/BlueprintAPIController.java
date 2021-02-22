@@ -78,7 +78,7 @@ public class BlueprintAPIController {
     
     /*POST METHODS*/
     
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<?> manejadorPostRecursoPlanos(@RequestBody JSONObject blueprint) {
         try {
             Blueprint temp = new Blueprint(blueprint.get("Autor").toString(), blueprint.get("Nombre").toString());
@@ -93,6 +93,7 @@ public class BlueprintAPIController {
             bpp.addNewBlueprint(temp);
             return new ResponseEntity<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED);
         } catch (Exception e) {
+            System.out.println(e);
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.FORBIDDEN.getReasonPhrase(), HttpStatus.FORBIDDEN);
         }
