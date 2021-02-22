@@ -109,6 +109,7 @@ Nos vamos a apoyar de la herramienta Postman, para comprobar de mejor manera los
 
 	Con lo anterior, registre un nuevo plano (para 'diseñar' un objeto jSON, puede usar [esta herramienta](http://www.jsoneditoronline.org/)):
 	
+	![](./img/media/Post.PNG)
 
 	Nota: puede basarse en el formato jSON mostrado en el navegador al consultar una orden con el método GET.
 
@@ -129,4 +130,5 @@ Ajuste el código para suprimir las condiciones de carrera. Tengan en cuenta que
 
 Escriba su análisis y la solución aplicada en el archivo ANALISIS_CONCURRENCIA.txt
 
+![](./img/media/ANALISIS_CONCURRENCIA.PNG)
 
